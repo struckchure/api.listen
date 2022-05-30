@@ -10,8 +10,8 @@ class User(BaseModel, AbstractUser):
     """
 
     username = models.CharField(max_length=32, unique=True)
-    avatar = models.URLField(max_length=500)
-    bio = models.TextField()
+    avatar = models.URLField(max_length=500, blank=True)
+    bio = models.TextField(blank=True)
 
     REQUIRED_FIELDS = []
     USERNAME_FIELD = "username"
