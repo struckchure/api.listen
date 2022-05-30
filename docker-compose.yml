@@ -1,0 +1,36 @@
+version: '3'
+
+# docker run -p 25478:25478 -v $HOME/tmp:/var/root mayth/simple-upload-server -token f9403fc5f537b4ab332d /var/root
+
+services:
+  media:
+    image: mayth/simple-upload-server
+    volumes:
+      - .docker/media:/var/root
+    ports:
+      - 25478:25478
+    env_file:
+      - .env
+    command: -token $MEDIA_TOKEN /var/root
+
+  db:
+    image: postgres:14.1-alpine
+    volumes:
+      - .docker/db:/var/run/postgresql/data
+    env_file:
+      - .env
+
+  django:
+    build:
+      context: .
+      dockerfile: ${PWD}/.docker/django/Dockerfile
+    volumes:
+      - .:/home/django/app/
+    env_file:
+      - .env
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - media
+      - db
+    ports:
+      - 5000:8000
