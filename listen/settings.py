@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken",
     # local apps
     "account",
     "song",
@@ -76,9 +77,12 @@ TEMPLATES = [
 WSGI_APPLICATION = "listen.wsgi.application"
 
 REST_FRAMEWORK = {
+    "DATE_INPUT_FORMATS": [
+        ("%d-%m-%Y"),
+    ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+        "rest_framework.authentication.TokenAuthentication",
+    ),
 }
 
 # Database
